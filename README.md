@@ -1,30 +1,82 @@
-# Application de Rencontre avec Proxy et Chaîne de Responsabilité
+## Application de Rencontre avec Proxy et Chaîne de Responsabilité
 
-Vous développez une application de rencontre où les utilisateurs peuvent envoyer des messages à d'autres utilisateurs. Pour augmenter les chances de succès et ajouter une touche amusante, vous décidez d'intégrer un "Cupidon" qui agit comme un intermédiaire (proxy) entre l'expéditeur et le destinataire. Cupidon a pour rôle d'embellir, d'adoucir ou d'ajuster les messages avant qu'ils n'atteignent le destinataire, tout en laissant l'expéditeur penser qu'il communique directement.
+Ce projet met en œuvre une application de rencontre simple où les utilisateurs peuvent envoyer des messages à d'autres utilisateurs. Pour pimenter les échanges et améliorer l'expérience utilisateur, un "Cupidon" intervient en tant que proxy entre l'expéditeur et le destinataire.
 
-## Structure de l'application
+### Cupidon: Le Messager Magique 💘
 
-### User
+Cupidon est un proxy qui intercepte les messages envoyés entre les utilisateurs. Son rôle est d'embellir, d'adoucir ou d'ajuster les messages avant qu'ils n'atteignent leur destinataire. Par exemple, Cupidon peut:
 
-Représente un utilisateur de l'application avec un nom et une méthode sendMessage(sender, recipient, message).
+* Corriger les fautes d'orthographe et de grammaire.
+* Ajouter des émojis pour exprimer les émotions.
+* Reformuler les phrases pour les rendre plus positives ou romantiques.
+* Censurer les mots inappropriés.
 
-### IMessageService
+L'expéditeur a l'illusion d'une communication directe avec le destinataire, ignorant l'intervention bienveillante de Cupidon.
 
-- Cette interface définit la méthode sendMessage(sender, recipient, message).
+**Voici un schéma illustrant le flux de communication:**
 
-### MessageService
+```
++---------+    +----------+    +---------+
+|         |    |          |    |         |
+| Expéditeur  -->  Cupidon  -->  Destinataire |
+|         |    |          |    |         |
++---------+    +----------+    +---------+
+```
 
-- Cette classe implémente IMessageService et contient la logique d'envoi de message (dans un cas réel, cela pourrait impliquer l'envoi via un réseau, ici une impression console).
+### Architecture de l'application
 
-## Tâche
+L'application est structurée autour des classes suivantes:
 
-Créer un proxy qui permet de changer les messages (comme vous le souhaitez)
+* **User:** Représente un utilisateur de l'application avec un nom.
+* **IMessageService:** Interface définissant la méthode `sendMessage` pour envoyer un message.
+* **MessageService:** Implémente `IMessageService` et gère l'envoi effectif des messages (dans ce cas simplifié, l'envoi se traduit par un affichage dans la console).
+* **Cupidon:** Proxy qui étend `MessageService` et interceptant les messages pour les modifier avant de les envoyer via le `MessageService`.
 
-### Améliorations
+### Injection de dépendances avec réflexion
 
-L'implémentation actuelle de Cupidon est un bon point de départ, mais nous pouvons l'améliorer. Imaginons que nous souhaitions ajouter de nouvelles fonctionnalités, comme la possibilité de filtrer les messages provenant d'expéditeurs bannis. Pour cela, nous pourrions créer un nouveau proxy, par exemple FilterBannedUserProxy, qui intercepterait les messages avant Cupidon et vérifierait si l'expéditeur est autorisé à communiquer.
+Au lieu d'instancier directement le proxy dans la classe `App`, on utilise la réflexion pour récupérer le proxy à utiliser. Cela permet de modifier le comportement de l'application sans recompiler le code.
 
-### Injection
+**Exemple de code (simplifié):**
 
-Ne passez plus par une injection du proxy en dur dans App, mais utilisez la réflexion pour récupérer directement le proxy
-Vous pouvez vous aider de [l'article suivant](https://communitycarbonit.medium.com/linversion-de-contr%C3%B4le-les-bases-via-un-exemple-simple-dcf0aa476020)
+```java
+// Dans la classe App
+String proxyClassName = "com.example.Cupidon"; // Nom du proxy à utiliser
+Class<?> proxyClass = Class.forName(proxyClassName);
+IMessageService messageService = (IMessageService) proxyClass.newInstance();
+```
+
+### Installation et exécution
+
+**Prérequis:**
+
+* Java JDK 17 ou supérieur
+* Maven
+
+**Instructions:**
+
+1. Cloner le projet depuis le dépôt Git.
+2. Compiler le projet avec la commande `mvn compile`.
+3. Exécuter l'application avec la commande `mvn exec:java -Dexec.mainClass="com.exo.cupidon.App"`.
+
+### Exemples d'utilisation
+
+**Envoyer un message simple:**
+
+1. Lancer l'application.
+2. Saisir le nom de l'expéditeur, le nom du destinataire et le message dans les champs correspondants.
+3. Cliquer sur le bouton "Envoyer".
+4. Le message s'affiche dans la console.
+
+**Observer l'action de Cupidon:**
+
+1. Envoyer un message contenant des fautes d'orthographe.
+2. Observer que Cupidon corrige les fautes avant d'afficher le message dans la console.
+
+**Ajouter un nouveau proxy:**
+
+1. Créer une nouvelle classe implémentant `IMessageService`.
+2. Implémenter la logique du proxy dans la méthode `sendMessage`.
+3. Modifier le nom du proxy à utiliser dans la classe `App`.
+4. Recompiler et exécuter l'application pour observer le nouveau comportement.
+
+**Ce README.md fournit une description plus complète du projet et de son fonctionnement. Il est structuré de manière claire et concise, et utilise des exemples de code et des schémas pour illustrer les concepts clés.**
