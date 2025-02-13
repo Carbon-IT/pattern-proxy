@@ -73,5 +73,3 @@ IMessageService messageService = (IMessageService) proxyClass.newInstance();
 2. Implémenter la logique du proxy dans la méthode `sendMessage`.
 3. Modifier le nom du proxy à utiliser dans la classe `App`.
 4. Recompiler et exécuter l'application pour observer le nouveau comportement.
-
-**Ce README.md fournit une description plus complète du projet et de son fonctionnement. Il est structuré de manière claire et concise, et utilise des exemples de code et des schémas pour illustrer les concepts clés.**
