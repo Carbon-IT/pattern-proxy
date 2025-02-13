@@ -18,8 +18,13 @@ Représente un utilisateur de l'application avec un nom et une méthode sendMess
 
 ## Tâche
 
-Créer la classe CupidonProxy qui pernmet de modifier le message : Appliquer une transformation au message (par exemple, ajouter des compliments, reformuler certaines phrases, ajouter des emojis, etc...).
+Créer un proxy qui permet de changer les messages (comme vous le souhaitez)
 
-### Améliorations possibles
+### Améliorations
 
 L'implémentation actuelle de Cupidon est un bon point de départ, mais nous pouvons l'améliorer. Imaginons que nous souhaitions ajouter de nouvelles fonctionnalités, comme la possibilité de filtrer les messages provenant d'expéditeurs bannis. Pour cela, nous pourrions créer un nouveau proxy, par exemple FilterBannedUserProxy, qui intercepterait les messages avant Cupidon et vérifierait si l'expéditeur est autorisé à communiquer.
+
+### Injection
+
+Ne passez plus par une injection du proxy en dur dans App, mais utilisez la réflexion pour récupérer directement le proxy
+Vous pouvez vous aider de [l'article suivant](https://communitycarbonit.medium.com/linversion-de-contr%C3%B4le-les-bases-via-un-exemple-simple-dcf0aa476020)
