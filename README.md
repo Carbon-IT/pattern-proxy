@@ -67,11 +67,6 @@ IMessageService messageService = (IMessageService) proxyClass.newInstance();
 3. Cliquer sur le bouton "Envoyer".
 4. Le message s'affiche dans la console.
 
-**Observer l'action de Cupidon:**
-
-1. Envoyer un message contenant des fautes d'orthographe.
-2. Observer que Cupidon corrige les fautes avant d'afficher le message dans la console.
-
 **Ajouter un nouveau proxy:**
 
 1. Créer une nouvelle classe implémentant `IMessageService`.
